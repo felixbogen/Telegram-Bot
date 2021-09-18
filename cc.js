@@ -1,6 +1,6 @@
 var lookup = require('binlookup')();
 const { Telegraf } = require('telegraf')
-require('dotenv').config({ path: '/Users/felix/Developer/Telegram Bot/env' })
+require('dotenv').config({ path: './env' })
 
 const token = process.env.API_KEY
 const bot = new Telegraf(token)
@@ -11,21 +11,22 @@ bot.hears(/CC (.+)/, async (ctx) => {
   const cardnumber = ctx.match[1];
 
   lookup(cardnumber, function( err, data ){
-    if (err)
+    if (err){
       ctx.reply('Error')
-
+    } else {
       ctx.reply(`
     ***********${data.type} Card**********
-Sheme: ${data.scheme}
-Brand: ${data.brand}
-Emoji: ${data.country.emoji}
-Country: ${data.country.name}
-Currency: ${data.country.currency}
-Bank: ${data.bank.name}
-BankUrl: ${data.bank.url}
-Phone: ${data.bank.phone}
-lat: ${data.country.latitude}
-long: ${data.country.longitude}`)
+    Sheme: ${data.scheme}
+    Brand: ${data.brand}
+    Emoji: ${data.country.emoji}
+    Country: ${data.country.name}
+    Currency: ${data.country.currency}
+    Bank: ${data.bank.name}
+    BankUrl: ${data.bank.url}
+    Phone: ${data.bank.phone}
+    lat: ${data.country.latitude}
+    long: ${data.country.longitude}`)
+    } 
   })
 })
 bot.launch()
